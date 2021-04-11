@@ -4,6 +4,10 @@ const mockAPIResponse = require('./mockAPI.js')
 var bodyParser = require('body-parser')
 var cors = require('cors')
 
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 var json = {
     'title': 'test json response',
     'message': 'this is a message',
@@ -33,5 +37,6 @@ app.get('/test', function (req, res) {
 
 // designates what port the app will listen to for incoming requests
 app.listen(8081, function () {
+    console.log(`Your API key is ${process.env.API_KEY}`);
     console.log('Example app listening on port 8081!')
 })
