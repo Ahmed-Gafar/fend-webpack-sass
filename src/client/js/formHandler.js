@@ -1,4 +1,4 @@
-function handleSubmit(event) {
+async function  handleSubmit(event) {
     event.preventDefault()
 
     // check what text was put into the form field
@@ -15,26 +15,42 @@ function handleSubmit(event) {
     redirect: 'follow'
     };
 
-    let getData = async () => {
-        const response = await fetch("https://api.meaningcloud.com/sentiment-2.1", requestOptions)
-        const data = await response.json()
-        console.log(data)
-        return data
-    }
+    const response = await fetch("https://api.meaningcloud.com/sentiment-2.1", requestOptions)
+    const body = await response.json()
     
-    let data = getData()
+    let data = formatData(body);
 
-    data = [['this is test', 'eqvgjhwbkjn fejfnkfrb kfe bckoufshofe hi fi we  ew dhrf  bd  er hewes  fr ew f gre d  tr rf ']]
-    var tbl = tableCreate(data);
+    let tbl = tableCreate(data);
 
-    var myElement = document.getElementById("results").appendChild(tbl);
+    let myElement = document.getElementById("results")
+    if (document.getElementById("table") != null)
+        myElement.removeChild(document.getElementById("table"))
+    myElement.appendChild(tbl);
     console.log(myElement);
 
 
 }
 
-// function that takes as an input the name and label to create a table with it's size
+function formatData(body){
+
+    let result = []
+    for(let i = 0; i < body.sentimented_concept_list.length; i++){
+        let name = body.sentimented_concept_list[i].form;
+        let label = body.sentimented_concept_list[i].type;
+        result.push([name,label]);
+    }
+    for(let i = 0; i < body.sentimented_entity_list.length; i++){
+        let name = body.sentimented_entity_list[i].form;
+        let label = body.sentimented_entity_list[i].type;
+        result.push([name,label]);
+    }
+    return result;
+}
+
+
+// function that takes as an input array of names and labels to create a table with it's size
 function tableCreate(data){
+    console.log(data)
     var tbl  = document.createElement('table');
     tbl.style.width  = '850px';
     tbl.id  = 'table';
