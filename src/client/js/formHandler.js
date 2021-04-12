@@ -1,7 +1,30 @@
 function handleSubmit(event) {
     event.preventDefault()
 
-    let data = [['this is test', 'eqvgjhwbkjn fejfnkfrb kfe bckoufshofe hi fi we  ew dhrf  bd  er hewes  fr ew f gre d  tr rf ']]
+    // check what text was put into the form field
+    let formText = document.getElementById('name').value
+
+    const formdata = new FormData();
+    formdata.append("key", "092f8720ac43ccc25d2ea1e9b645beb3");
+    formdata.append("txt", formText);
+    formdata.append("lang", "en");  // 2-letter code, like en es fr ...
+
+    const requestOptions = {
+    method: 'POST',
+    body: formdata,
+    redirect: 'follow'
+    };
+
+    let getData = async () => {
+        const response = await fetch("https://api.meaningcloud.com/sentiment-2.1", requestOptions)
+        const data = await response.json()
+        console.log(data)
+        return data
+    }
+    
+    let data = getData()
+
+    data = [['this is test', 'eqvgjhwbkjn fejfnkfrb kfe bckoufshofe hi fi we  ew dhrf  bd  er hewes  fr ew f gre d  tr rf ']]
     var tbl = tableCreate(data);
 
     var myElement = document.getElementById("results").appendChild(tbl);
