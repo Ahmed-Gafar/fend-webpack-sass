@@ -1,6 +1,16 @@
 async function handleSubmit(event) {
   event.preventDefault();
 
+  fetch('http://localhost:8081/api_key')
+    .then(res => {
+        return res.json()
+    })
+    .then(function(data) {
+        console.log(data)
+        document.getElementById('results').innerHTML = data.message
+    })
+
+
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
 
@@ -20,7 +30,7 @@ async function handleSubmit(event) {
     requestOptions
   );
   const body = await response.json();
-  console.log(body);
+
   if (body.status.msg == "OK") {
     let data = formatData(body);
     let tbl = tableCreate(data);
@@ -29,7 +39,6 @@ async function handleSubmit(event) {
     if (document.getElementById("table") != null)
       myElement.removeChild(document.getElementById("table"));
     myElement.appendChild(tbl);
-    console.log(myElement);
   }
 }
 
@@ -50,7 +59,6 @@ function formatData(body) {
 
 // function that takes as an input array of names and labels to create a table with it's size
 function tableCreate(data) {
-  console.log(data);
   var tbl = document.createElement("table");
   tbl.style.width = "850px";
   tbl.id = "table";
