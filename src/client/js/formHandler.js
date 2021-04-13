@@ -1,14 +1,8 @@
 async function handleSubmit(event) {
   event.preventDefault();
 
-  let api_key = fetch('http://localhost:8081/api_key')
-    .then(res => {
-        console.log('test' + res.json())
-        return res.json()
-        
-    })
-  
-    console.log('from outside' + api_key)
+  let api_key_response = await fetch("http://localhost:8081/api_key");
+  let api_key = await api_key_response.json();
 
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
@@ -38,7 +32,6 @@ async function handleSubmit(event) {
     if (document.getElementById("table") != null)
       myElement.removeChild(document.getElementById("table"));
     myElement.appendChild(tbl);
-    console.log('gleoef')
   }
 }
 
