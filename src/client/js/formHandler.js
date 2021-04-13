@@ -1,21 +1,20 @@
 async function handleSubmit(event) {
   event.preventDefault();
 
-  fetch('http://localhost:8081/api_key')
+  let api_key = fetch('http://localhost:8081/api_key')
     .then(res => {
+        console.log('test' + res.json())
         return res.json()
+        
     })
-    .then(function(data) {
-        console.log(data)
-        document.getElementById('results').innerHTML = data.message
-    })
-
+  
+    console.log('from outside' + api_key)
 
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
 
   const formdata = new FormData();
-  formdata.append("key", "092f8720ac43ccc25d2ea1e9b645beb3");
+  formdata.append("key", api_key);
   formdata.append("txt", formText);
   formdata.append("lang", "en"); // 2-letter code, like en es fr ...
 
@@ -39,6 +38,7 @@ async function handleSubmit(event) {
     if (document.getElementById("table") != null)
       myElement.removeChild(document.getElementById("table"));
     myElement.appendChild(tbl);
+    console.log('gleoef')
   }
 }
 
