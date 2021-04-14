@@ -1,11 +1,15 @@
 async function handleSubmit(event) {
   event.preventDefault();
 
-  // let api_key_response = await fetch("http://localhost:8081/api_key");
-  // let api_key = await api_key_response.json();
+  let api_key;
+  try {
+    let api_key_response = await fetch("/api_key");
+    api_key = await api_key_response.json()
+  } catch (error) {
+    api_key = process.env.API_KEY
+  }
 
-  let api_key = process.env.API_KEY;
-  console.log(process.env.API_KEY)
+  console.log(api_key)
 
   // check what text was put into the form field
   let formText = document.getElementById("name").value;

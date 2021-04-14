@@ -26,6 +26,12 @@ app.use(express.static("dist"));
 //   });
 // }
 
+let API_KEY = process.env.API_KEY;
+
+app.get("/api_key", function (req, res) {
+    res.json(process.env.API_KEY);
+});
+
 app.get("/", function (req, res) {
   res.sendFile("dist/index.html");
 });
