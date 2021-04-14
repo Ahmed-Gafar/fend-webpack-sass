@@ -2,6 +2,9 @@ var path = require("path");
 const express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -29,5 +32,7 @@ app.get("/", function (req, res) {
 
 // designates what port the app will listen to for incoming requests
 app.listen(process.env.PORT || 8081, function () {
+  console.log('from logs in server : '  + process.env.API_KEY);
+
   console.log("Example app listening on port 8081!");
 });
