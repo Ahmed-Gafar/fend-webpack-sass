@@ -33,5 +33,8 @@ module.exports = {
     new WorkboxPlugin.GenerateSW(),
     new MiniCssExtractPlugin({ filename: "[name].css" }),
     new Dotenv(),
+    new webpack.DefinePlugin({           
+      API_KEY: JSON.stringify(process.env.API_KEY),      
+    })
   ],
 };

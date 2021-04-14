@@ -5,6 +5,7 @@ async function handleSubmit(event) {
   // let api_key = await api_key_response.json();
 
   let api_key = process.env.API_KEY;
+  console.log(process.env.API_KEY)
 
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
