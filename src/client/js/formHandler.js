@@ -3,7 +3,6 @@ async function handleSubmit(event) {
 
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
-  console.log(formText);
 
   let response = await fetch("/api_response", {
     method: "POST",
@@ -13,8 +12,6 @@ async function handleSubmit(event) {
     body: JSON.stringify({ url: formText }),
   });
   const body = await response.json();
-
-  console.log(body);
 
   if (body.status.msg == "OK") {
     let data = formatData(body);

@@ -36,19 +36,14 @@ app.post("/api_response", async function (req, res) {
             const html = response.data;
             const $ = cheerio.load(html);
             // Get text 
-            console.log("------- with axios module -------")
-            console.log($.text());
             input = $.text()
 
             // Get HTML 
             //console.log($.html());
         }
     })
-    .catch((err) => {
-        throw new Error(err);
-    });
+   
 
-    console.log(input);
   const formdata = new FormData();
   formdata.append("key", process.env.API_KEY);
   formdata.append("txt", input);
@@ -77,3 +72,5 @@ let port = process.env.PORT || 8081;
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`);
 });
+
+module.exports = app
