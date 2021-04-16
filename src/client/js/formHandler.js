@@ -1,35 +1,20 @@
 async function handleSubmit(event) {
   event.preventDefault();
 
-  let api_key;
-  try {
-    let api_key_response = await fetch("/api_key");
-    api_key = await api_key_response.json()
-  } catch (error) {
-    api_key = process.env.API_KEY
-  }
-
-  console.log(api_key)
-
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
+  console.log(formText);
 
-  const formdata = new FormData();
-  formdata.append("key", api_key);
-  formdata.append("txt", formText);
-  formdata.append("lang", "en"); // 2-letter code, like en es fr ...
-
-  const requestOptions = {
+  let response = await fetch("http://localhost:8081/api_response", {
     method: "POST",
-    body: formdata,
-    redirect: "follow",
-  };
-
-  const response = await fetch(
-    "https://api.meaningcloud.com/sentiment-2.1",
-    requestOptions
-  );
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ url: formText }),
+  });
   const body = await response.json();
+
+  console.log(body);
 
   if (body.status.msg == "OK") {
     let data = formatData(body);

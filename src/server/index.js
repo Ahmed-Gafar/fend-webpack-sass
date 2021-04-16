@@ -2,7 +2,10 @@ var path = require("path");
 const express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
+var FormData = require("form-data");
+const fetch = require("node-fetch");
+const request = require('request');
 
 dotenv.config();
 
@@ -19,26 +22,35 @@ app.use(
 
 app.use(express.static("dist"));
 
-// if (process.env.NODE_ENV === "production"){
-//   app.use(express.static("build"));
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname,  "build", "index.html"));
-//   });
-// }
-
 let API_KEY = process.env.API_KEY;
 
-app.get("/api_key", function (req, res) {
-    res.json(process.env.API_KEY);
+app.post("/api_response", async function (req, res) {
+  let url = req.body.url;
+  const formdata = new FormData();
+  formdata.append("key", process.env.API_KEY);
+  formdata.append("txt", url);
+  formdata.append("lang", "en"); // 2-letter code, like en es fr ...
+
+  const requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  const response = await fetch(
+    "https://api.meaningcloud.com/sentiment-2.1",
+    requestOptions
+  );
+  const body = await response.json();
+  res.json(body);
 });
 
 app.get("/", function (req, res) {
   res.sendFile("dist/index.html");
 });
 
+let port = process.env.PORT || 8081;
 // designates what port the app will listen to for incoming requests
-app.listen(process.env.PORT || 8081, function () {
-  console.log('from logs in server : '  + process.env.API_KEY);
-
-  console.log("Example app listening on port 8081!");
+app.listen(port, function () {
+  console.log(`Example app listening on port ${port}!`);
 });
