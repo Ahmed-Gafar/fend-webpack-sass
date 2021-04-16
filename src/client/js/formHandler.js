@@ -5,7 +5,7 @@ async function handleSubmit(event) {
   let formText = document.getElementById("name").value;
   console.log(formText);
 
-  let response = await fetch("http://localhost:8081/api_response", {
+  let response = await fetch("/api_response", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
