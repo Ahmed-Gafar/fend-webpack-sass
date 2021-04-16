@@ -5,7 +5,6 @@ var cors = require("cors");
 const dotenv = require("dotenv");
 var FormData = require("form-data");
 const fetch = require("node-fetch");
-const request = require('request');
 
 dotenv.config();
 
