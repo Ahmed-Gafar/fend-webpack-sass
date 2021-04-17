@@ -3,27 +3,39 @@ async function handleSubmit(event) {
 
   // check what text was put into the form field
   let formText = document.getElementById("name").value;
-  console.log(formText);
 
-  let response = await fetch("/api_response", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ url: formText }),
-  });
-  const body = await response.json();
+  if (!isUrl(formText)) {
+    alert("please enter url format");
+    return;
+  }
+  try {
+    let response = await fetch("/api_response", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: formText }),
+    });
+    const body = await response.json();
 
-  console.log(body);
+    if (body.status.msg == "OK") {
+      let data = formatData(body);
 
-  if (body.status.msg == "OK") {
-    let data = formatData(body);
-    let tbl = tableCreate(data);
+      let tbl = tableCreate(data);
+      let divInfo = addInfo(body);
 
-    let myElement = document.getElementById("results");
-    if (document.getElementById("table") != null)
-      myElement.removeChild(document.getElementById("table"));
-    myElement.appendChild(tbl);
+      let tableElement = document.getElementById("results");
+      let infoElement = document.getElementById("info");
+      if (document.getElementById("table") != null || document.getElementById("infoDiv") != null ){
+        tableElement.removeChild(document.getElementById("table"));
+        infoElement.removeChild(document.getElementById("infoDiv"));
+        
+      }
+      tableElement.appendChild(tbl);
+      infoElement.appendChild(divInfo);
+    }
+  } catch (error) {
+    alert("there was an error from the server side");
   }
 }
 
@@ -40,6 +52,41 @@ function formatData(body) {
     result.push([name, label]);
   }
   return result;
+}
+
+function isUrl(s) {
+  var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+  return regexp.test(s);
+}
+
+function addInfo(body) {
+  let subjectivity = (body.subjectivity).toLowerCase();
+  let text = `this article's subjectivity is ${subjectivity} and its sentiment is `;
+  switch (body.score_tag) {
+    case "P+":
+      text += "strong positive";
+      break;
+    case "P":
+      text += "positive";
+      break;
+    case "NEU":
+      text += "neutral";
+      break;
+    case "N":
+      text += "negative";
+      break;
+    case "N+":
+      text += "strong negative";
+      break;
+    default:
+      text += "without sentiment";
+  }
+
+  let newDiv = document.createElement("div");
+  newDiv.id = "infoDiv"
+  const newContent = document.createTextNode(text);
+  newDiv.appendChild(newContent);
+  return newDiv
 }
 
 // function that takes as an input array of names and labels to create a table with it's size
