@@ -6,7 +6,7 @@ const request = require("supertest");
 
 describe("Testing server", () => {
   test("Testing server works", () => {
-    let server = app.listen(3000, () => console.log('Listening on port 3000'));
+    let server = app.listen(8081, () => console.log('Listening on port 8081'));
     if (process.env.NODE_ENV !== 'test') {
         expect(false)
       }
