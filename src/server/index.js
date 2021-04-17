@@ -37,9 +37,6 @@ app.post("/api_response", async function (req, res) {
             const $ = cheerio.load(html);
             // Get text 
             input = $.text()
-
-            // Get HTML 
-            //console.log($.html());
         }
     })
    
