@@ -9,6 +9,13 @@ module.exports = {
   output: {
     libraryTarget: "var",
     library: "Client",
+    publicPath: 'http://localhost:8080/',
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    disableHostCheck: true,
+    port: 8080,
   },
   mode: "development",
   devtool: "source-map",
