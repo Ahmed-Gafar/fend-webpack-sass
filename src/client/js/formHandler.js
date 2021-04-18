@@ -1,3 +1,6 @@
+import { isUrl } from "./verifier";
+
+
 async function handleSubmit(event) {
   event.preventDefault();
 
@@ -26,10 +29,12 @@ async function handleSubmit(event) {
 
       let tableElement = document.getElementById("results");
       let infoElement = document.getElementById("info");
-      if (document.getElementById("table") != null || document.getElementById("infoDiv") != null ){
+      if (
+        document.getElementById("table") != null ||
+        document.getElementById("infoDiv") != null
+      ) {
         tableElement.removeChild(document.getElementById("table"));
         infoElement.removeChild(document.getElementById("infoDiv"));
-        
       }
       tableElement.appendChild(tbl);
       infoElement.appendChild(divInfo);
@@ -54,13 +59,8 @@ function formatData(body) {
   return result;
 }
 
-function isUrl(s) {
-  var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-  return regexp.test(s);
-}
-
 function addInfo(body) {
-  let subjectivity = (body.subjectivity).toLowerCase();
+  let subjectivity = body.subjectivity.toLowerCase();
   let text = `this article's subjectivity is ${subjectivity} and its sentiment is `;
   switch (body.score_tag) {
     case "P+":
@@ -83,10 +83,10 @@ function addInfo(body) {
   }
 
   let newDiv = document.createElement("div");
-  newDiv.id = "infoDiv"
+  newDiv.id = "infoDiv";
   const newContent = document.createTextNode(text);
   newDiv.appendChild(newContent);
-  return newDiv
+  return newDiv;
 }
 
 // function that takes as an input array of names and labels to create a table with it's size
