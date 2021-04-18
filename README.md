@@ -5,7 +5,7 @@
 
 * npm i
 
-* npm run build-dev
+* npm run build
 
 * npm run start
 
